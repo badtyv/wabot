@@ -46,13 +46,13 @@ const { GroupUpdate, GroupParticipantsUpdate, MessagesUpsert, Solving } = requir
 const { isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep } = require('./lib/function');
 
 /*
-	* Create By Naze
-	* Follow https://github.com/nazedev
+	* Create By ndaa
+	* Follow https://github.com/sessions
 	* Whatsapp : wa.me/6282113821188
 */
 
-async function startNazeBot() {
-	const { state, saveCreds } = await useMultiFileAuthState('nazedev');
+async function startndaaBot() {
+	const { state, saveCreds } = await useMultiFileAuthState('sessions');
 	const { version, isLatest } = await fetchLatestWaWebVersion();
 	const msgRetryCounterCache = new NodeCache();
 	const level = pino({ level: 'silent' })
@@ -63,11 +63,11 @@ async function startNazeBot() {
 			return msg?.message || ''
 		}
 		return {
-			conversation: 'Halo Saya Naze Bot'
+			conversation: 'Halo Saya ndaa Bot'
 		}
 	}
 	
-	const naze = WAConnection({
+	const ndaa = WAConnection({
 		isLatest,
 		//version: [2, 3000, 1015901307],
 		logger: level,
@@ -92,7 +92,7 @@ async function startNazeBot() {
 		generateHighQualityLinkPreview: true,
 	})
 	
-	if (pairingCode && !naze.authState.creds.registered) {
+	if (pairingCode && !ndaa.authState.creds.registered) {
 		let phoneNumber;
 		async function getPhoneNumber() {
 			phoneNumber = await question('Please type your WhatsApp number : ');
@@ -106,97 +106,97 @@ async function startNazeBot() {
 		
 		setTimeout(async () => {
 			await getPhoneNumber()
-			await exec('rm -rf ./nazedev/*')
-			let code = await naze.requestPairingCode(phoneNumber);
+			await exec('rm -rf ./sessions/*')
+			let code = await ndaa.requestPairingCode(phoneNumber);
 			console.log(`Your Pairing Code : ${code}`);
 		}, 3000)
 	}
 	
-	store.bind(naze.ev)
+	store.bind(ndaa.ev)
 	
-	await Solving(naze, store)
+	await Solving(ndaa, store)
 	
-	naze.ev.on('creds.update', saveCreds)
+	ndaa.ev.on('creds.update', saveCreds)
 	
-	naze.ev.on('connection.update', async (update) => {
+	ndaa.ev.on('connection.update', async (update) => {
 		const { connection, lastDisconnect, receivedPendingNotifications } = update
 		if (connection === 'close') {
 			const reason = new Boom(lastDisconnect?.error)?.output.statusCode
 			if (reason === DisconnectReason.connectionLost) {
 				console.log('Connection to Server Lost, Attempting to Reconnect...');
-				startNazeBot()
+				startndaaBot()
 			} else if (reason === DisconnectReason.connectionClosed) {
 				console.log('Connection closed, Attempting to Reconnect...');
-				startNazeBot()
+				startndaaBot()
 			} else if (reason === DisconnectReason.restartRequired) {
 				console.log('Restart Required...');
-				startNazeBot()
+				startndaaBot()
 			} else if (reason === DisconnectReason.timedOut) {
 				console.log('Connection Timed Out, Attempting to Reconnect...');
-				startNazeBot()
+				startndaaBot()
 			} else if (reason === DisconnectReason.badSession) {
 				console.log('Delete Session and Scan again...');
-				startNazeBot()
+				startndaaBot()
 			} else if (reason === DisconnectReason.connectionReplaced) {
 				console.log('Close current Session first...');
-				startNazeBot()
+				startndaaBot()
 			} else if (reason === DisconnectReason.loggedOut) {
 				console.log('Scan again and Run...');
-				exec('rm -rf ./nazedev/*')
+				exec('rm -rf ./sessions/*')
 				process.exit(1)
 			} else if (reason === DisconnectReason.Multidevicemismatch) {
 				console.log('Scan again...');
-				exec('rm -rf ./nazedev/*')
+				exec('rm -rf ./sessions/*')
 				process.exit(0)
 			} else {
-				naze.end(`Unknown DisconnectReason : ${reason}|${connection}`)
+				ndaa.end(`Unknown DisconnectReason : ${reason}|${connection}`)
 			}
 		}
 		if (connection == 'open') {
-			console.log('Connected to : ' + JSON.stringify(naze.user, null, 2));
+			console.log('Connected to : ' + JSON.stringify(ndaa.user, null, 2));
 		}
 		if (receivedPendingNotifications == 'true') {
 			console.log('Please wait About 1 Minute...')
-			naze.ev.flush()
+			ndaa.ev.flush()
 		}
 	});
 	
-	naze.ev.on('contacts.update', (update) => {
+	ndaa.ev.on('contacts.update', (update) => {
 		for (let contact of update) {
-			let id = naze.decodeJid(contact.id)
+			let id = ndaa.decodeJid(contact.id)
 			if (store && store.contacts) store.contacts[id] = { id, name: contact.notify }
 		}
 	});
 	
-	naze.ev.on('call', async (call) => {
-		let botNumber = await naze.decodeJid(naze.user.id);
+	ndaa.ev.on('call', async (call) => {
+		let botNumber = await ndaa.decodeJid(ndaa.user.id);
 		if (db.set[botNumber].anticall) {
 			for (let id of call) {
 				if (id.status === 'offer') {
-					let msg = await naze.sendMessage(id.from, { text: `Saat Ini, Kami Tidak Dapat Menerima Panggilan ${id.isVideo ? 'Video' : 'Suara'}.\nJika @${id.from.split('@')[0]} Memerlukan Bantuan, Silakan Hubungi Owner :)`, mentions: [id.from]});
-					await naze.sendContact(id.from, global.owner, msg);
-					await naze.rejectCall(id.id, id.from)
+					let msg = await ndaa.sendMessage(id.from, { text: `Saat Ini, Kami Tidak Dapat Menerima Panggilan ${id.isVideo ? 'Video' : 'Suara'}.\nJika @${id.from.split('@')[0]} Memerlukan Bantuan, Silakan Hubungi Owner :)`, mentions: [id.from]});
+					await ndaa.sendContact(id.from, global.owner, msg);
+					await ndaa.rejectCall(id.id, id.from)
 				}
 			}
 		}
 	});
 	
-	naze.ev.on('groups.update', async (update) => {
-		await GroupUpdate(naze, update, store);
+	ndaa.ev.on('groups.update', async (update) => {
+		await GroupUpdate(ndaa, update, store);
 	});
 	
-	naze.ev.on('group-participants.update', async (update) => {
-		await GroupParticipantsUpdate(naze, update, store);
+	ndaa.ev.on('group-participants.update', async (update) => {
+		await GroupParticipantsUpdate(ndaa, update, store);
 	});
 	
-	naze.ev.on('messages.upsert', async (message) => {
-		await MessagesUpsert(naze, message, store);
+	ndaa.ev.on('messages.upsert', async (message) => {
+		await MessagesUpsert(ndaa, message, store);
 	});
 
-	return naze
+	return ndaa
 }
 
-startNazeBot()
+startndaaBot()
 
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {

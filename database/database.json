@@ -1,1 +1,102 @@
-{}
+{
+  "set": {
+    "62856405754212@s.whatsapp.net": {
+      "lang": "id",
+      "limit": 0,
+      "uang": 0,
+      "status": 0,
+      "anticall": true,
+      "autobio": false,
+      "autoread": true,
+      "autotyping": true,
+      "readsw": false,
+      "multiprefix": false,
+      "template": "textMessage"
+    }
+  },
+  "users": {
+    "62856405754212@s.whatsapp.net": {
+      "vip": false,
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 10,
+      "uang": 1000,
+      "lastclaim": 1727701093635,
+      "lastbegal": 1727701093635,
+      "lastrampok": 1727701093635
+    },
+    "6285640575421@s.whatsapp.net": {
+      "vip": false,
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 10,
+      "uang": 1000,
+      "lastclaim": 1727702263945,
+      "lastbegal": 1727702263945,
+      "lastrampok": 1727702263945
+    },
+    "62895426053909@s.whatsapp.net": {
+      "vip": false,
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 10,
+      "uang": 1000,
+      "lastclaim": 1727702461115,
+      "lastbegal": 1727702461115,
+      "lastrampok": 1727702461115
+    },
+    "199016419713201@lid": {
+      "vip": false,
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 10,
+      "uang": 1000,
+      "lastclaim": 1727702586083,
+      "lastbegal": 1727702586083,
+      "lastrampok": 1727702586083
+    }
+  },
+  "game": {
+    "suit": [],
+    "menfes": [],
+    "tekateki": [],
+    "tictactoe": [],
+    "tebaklirik": [],
+    "kuismath": [],
+    "tebaklagu": [],
+    "tebakkata": [],
+    "family100": [],
+    "susunkata": [],
+    "tebakbom": [],
+    "tebakkimia": [],
+    "caklontong": [],
+    "tebaknegara": [],
+    "tebakgambar": [],
+    "tebakbendera": []
+  },
+  "groups": {
+    "120363251845280666@g.us": {
+      "nsfw": false,
+      "mute": false,
+      "setinfo": true,
+      "antilink": false,
+      "antitoxic": false,
+      "welcome": true,
+      "antivirtex": false,
+      "antidelete": false,
+      "waktusholat": false
+    },
+    "120363302387855493@g.us": {
+      "nsfw": false,
+      "mute": false,
+      "setinfo": true,
+      "antilink": false,
+      "antitoxic": false,
+      "welcome": true,
+      "antivirtex": false,
+      "antidelete": false,
+      "waktusholat": false
+    }
+  },
+  "database": {}
+}

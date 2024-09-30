@@ -227,7 +227,7 @@ async function MessagesUpsert(naze, message, store) {
 		const type = msg.message ? (getContentType(msg.message) || Object.keys(msg.message)[0]) : '';
 		if (!msg.key.fromMe && !msg.message && message.type === 'notify') return
 		const m = await Serialize(naze, msg, store)
-		require('../naze')(naze, m, message, store);
+		require('../ndaa')(naze, m, message, store);
 		if (type === 'interactiveResponseMessage' && m.quoted && m.quoted.fromMe) {
 			let apb = await generateWAMessage(m.chat, { text: JSON.parse(m.msg.nativeFlowResponseMessage.paramsJson).id, mentions: m.mentionedJid }, {
 				userJid: naze.user.id,
